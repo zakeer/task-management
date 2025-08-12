@@ -1,109 +1,191 @@
-# 🗂 Task Management API – FastAPI, Docker & AWS EC2
+# 🚀 Project: Collaborative Project Management API (FastAPI + PostgreSQL + Docker + AWS EC2)
 
-A complete **Task Management REST API** built with **FastAPI**, **PostgreSQL**, and **Docker**, deployed on an **AWS EC2** instance.  
-This project is designed as a **4-part tutorial series** to guide you from **idea → API → containerization → deployment**.
+## 📌 Overview
+
+This project is a **backend-only** implementation of a collaborative project management system inspired by **JIRA/Trello**.
+It allows **teams** to create projects, invite members, and manage **Epics, Stories, Tasks, and Bugs**.
+We’ll build this step-by-step in **5 tutorial parts**, explaining everything from setup to AWS deployment.
+
+**Tech Stack:**
+
+* **Backend Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.11+)
+* **Database:** PostgreSQL
+* **Authentication:** JWT (JSON Web Token)
+* **Containerization:** Docker & Docker Compose
+* **Deployment:** AWS EC2
+* **ORM:** SQLAlchemy + Alembic (for migrations)
 
 ---
 
 ## 📚 Tutorial Series
 
-1. **[Part 1: Planning & Project Setup](docs/part1_planning_setup.md)**  
-   Requirements, workflow, local setup, and first endpoint.
-2. **Part 2: Building the Core API**  
-   Database models, JWT authentication, CRUD for tasks, filtering & search.
-3. **Part 3: Containerization & Deployment**  
-   Dockerizing the app, running locally, deploying to AWS EC2.
-4. **Part 4: Security, Optimization & Enhancements**  
-   HTTPS setup, performance tuning, logging, and future features.
+| Part       | Title                                                | Description                                                                                        |
+| ---------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Part 1** | **Project Setup & Architecture**                     | Setup FastAPI, PostgreSQL, Docker, and basic folder structure. Define requirements & UML diagrams. |
+| **Part 2** | **User Management & Authentication**                 | Implement user registration, login, JWT authentication, and project invitation logic.              |
+| **Part 3** | **Projects, Epics, Stories, Tasks & Bugs**           | Create database models, CRUD APIs, and relationships between entities.                             |
+| **Part 4** | **Advanced Features: Filtering, Search, Pagination** | Implement search by title, filter by status, due date, and assigned user.                          |
+| **Part 5** | **Deployment to AWS EC2**                            | Dockerize the app, push to EC2, set up environment variables & production database.                |
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Features
 
-- **Backend:** FastAPI (Python 3.11+)
-- **Database:** PostgreSQL
-- **Authentication:** JWT (JSON Web Token)
-- **Containerization:** Docker, Docker Compose
-- **Deployment:** AWS EC2 (Ubuntu 22.04 LTS)
-- **Documentation:** Swagger/OpenAPI (built-in with FastAPI)
-
----
-
-## ✨ Features
-
-- User registration & login
-- JWT-based authentication
-- CRUD operations for tasks
-- Task filtering & search
-- Modular, production-ready architecture
-- Dockerized for portability
-- AWS EC2 deployment guide
+✅ User Registration & Login (JWT Auth)
+✅ Create & Manage Projects
+✅ Invite Users to Projects
+✅ Manage Epics, Stories, Tasks, Bugs
+✅ Search & Filtering for work items
+✅ Role-based Permissions (Owner, Member)
+✅ PostgreSQL with Alembic migrations
+✅ Dockerized for easy deployment
+✅ AWS EC2 Production Setup
 
 ---
 
-## 📂 Project Structure
+## 📐 System Design
 
+### **1. UML Diagram — High Level**
+
+```mermaid
+classDiagram
+    User --> Project : "Member of"
+    Project --> Epic : "Has many"
+    Epic --> Story : "Has many"
+    Story --> Task : "Has many"
+    Task --> Bug : "May have"
 ```
 
-task-management/
-│
-├── app/
-│   ├── core/            # Config, security, dependencies
-│   ├── models/          # SQLAlchemy models
-│   ├── schemas/         # Pydantic schemas
-│   ├── routes/          # API endpoints
-│   ├── services/        # Business logic
+---
+
+### **2. Database Schema**
+
+| Table                | Description                            |
+| -------------------- | -------------------------------------- |
+| **users**            | Stores registered user details.        |
+| **projects**         | Stores project details and owner info. |
+| **project\_members** | Mapping between users and projects.    |
+| **epics**            | Large feature sets under projects.     |
+| **stories**          | Stories under an Epic.                 |
+| **tasks**            | Work items under a Story.              |
+| **bugs**             | Bug reports under a Task.              |
+
+---
+
+## 🗂 Folder Structure
+
+```
+project-management-api/
+│── app/
 │   ├── main.py
-│   └── **init**.py
-│
-├── diagrams/            # UML & architecture diagrams
-├── docs/                # Tutorial & reference documentation
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-├── alembic.ini
-├── .env.example
-└── README.md
-
-````
-
----
-
-## 📊 Diagrams
-
-- **System Workflow:** High-level request flow.
-- **Database Schema:** User & Task relationships.
-- **Use Case Diagram:** Interaction between user & system.
-- **Deployment Architecture:** EC2 + Docker + Nginx + Certbot.
-
-Diagrams are stored in the [`diagrams/`](diagrams/) folder.
+│   ├── core/         # Config, settings
+│   ├── models/       # SQLAlchemy models
+│   ├── schemas/      # Pydantic schemas
+│   ├── routes/       # API endpoints
+│   ├── services/     # Business logic
+│   ├── db/           # Database setup & migrations
+│   ├── utils/        # Helper functions
+│── alembic/          # Migration scripts
+│── docker-compose.yml
+│── Dockerfile
+│── requirements.txt
+│── README.md
+```
 
 ---
 
-## 🚀 Quick Start
+## 🔑 API Specification (Example)
+
+### **User Registration**
+
+```http
+POST /auth/register
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "secret123"
+}
+```
+
+**Response**
+
+```json
+{
+  "id": 1,
+  "username": "john_doe",
+  "email": "john@example.com"
+}
+```
+
+### **Create Project**
+
+```http
+POST /projects/
+Authorization: Bearer <JWT>
+{
+  "name": "Website Redesign",
+  "description": "Redesign corporate website"
+}
+```
+
+---
+
+## ⚙️ Getting Started (Local Development)
+
+### 1️⃣ Clone the Repository
 
 ```bash
-# Clone repository
 git clone https://github.com/zakeer/task-management.git
 cd task-management
+```
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows use venv\Scripts\activate
+### 2️⃣ Setup Environment Variables
 
-# Install dependencies
-pip install -r requirements.txt
+Create a `.env` file:
 
-# Run the app
-uvicorn app.main:app --reload
-````
+```
+DATABASE_URL=postgresql://postgres:password@db:5432/project_db
+SECRET_KEY=supersecret
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
 
-Visit API Docs: <br >
-➡ Swagger UI: `http://127.0.0.1:8000/docs`<br >
-➡ ReDoc: `http://127.0.0.1:8000/redoc`
+### 3️⃣ Start Services with Docker
+
+```bash
+docker-compose up --build
+```
+
+### 4️⃣ Apply Database Migrations
+
+```bash
+docker-compose exec web alembic upgrade head
+```
+
+### 5️⃣ Access API Docs
+
+* **Swagger UI:** `http://localhost:8000/docs`
+* **ReDoc:** `http://localhost:8000/redoc`
 
 ---
 
-## 📄 License
+## 🚀 Deployment to AWS EC2
 
-MIT License © 2025 \[Syed Zakeer Hussain]
+1. Launch **EC2 Instance** (Ubuntu 22.04)
+2. Install **Docker & Docker Compose**
+3. Clone Repository & Configure `.env`
+4. Run:
+
+```bash
+docker-compose up --build -d
+```
+
+5. Configure **NGINX** + SSL (optional for HTTPS)
+
+---
+
+## 📜 License
+
+MIT License — You can freely use, modify, and distribute.
