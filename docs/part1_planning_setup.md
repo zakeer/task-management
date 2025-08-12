@@ -65,59 +65,66 @@ project-management-backend/
 
 ```mermaid
 erDiagram
-    USER ||--o{ PROJECT_USER : "assigned to"
-    PROJECT ||--o{ PROJECT_USER : "has members"
-    PROJECT ||--o{ EPIC : "contains"
-    EPIC ||--o{ STORY : "contains"
-    STORY ||--o{ TASK : "has"
-    STORY ||--o{ BUG : "has"
+    USERS ||--o{ PROJECT_MEMBERS : "belongs to"
+    PROJECTS ||--o{ PROJECT_MEMBERS : "has members"
+    PROJECTS ||--o{ EPICS : "has"
+    EPICS ||--o{ STORIES : "has"
+    STORIES ||--o{ TASKS : "has"
+    STORIES ||--o{ BUGS : "has"
+    TASKS ||--o{ COMMENTS : "has"
+    BUGS ||--o{ COMMENTS : "has"
+    USERS ||--o{ TASKS : "assigned to"
+    USERS ||--o{ BUGS : "assigned to"
+    USERS ||--o{ COMMENTS : "writes"
 
-    USER {
+    USERS {
         int id
         string username
         string email
-        string password_hash
+        string hashed_password
+        datetime created_at
     }
-
-    PROJECT {
+    PROJECTS {
         int id
         string name
         string description
+        datetime created_at
     }
-
-    PROJECT_USER {
-        int user_id
-        int project_id
-        string role
-    }
-
-    EPIC {
+    EPICS {
         int id
         string title
         string description
+        int project_id
     }
-
-    STORY {
+    STORIES {
         int id
         string title
         string description
         int epic_id
     }
-
-    TASK {
+    TASKS {
         int id
         string title
+        string description
         string status
         int story_id
         int assignee_id
     }
-
-    BUG {
+    BUGS {
         int id
         string title
+        string description
         string severity
+        string status
         int story_id
-        int reporter_id
+        int assignee_id
+    }
+    COMMENTS {
+        int id
+        string content
+        int author_id
+        int task_id
+        int bug_id
     }
 ```
 
@@ -394,75 +401,6 @@ class Comment(Base):
     task = relationship("Task", back_populates="comments")
     bug = relationship("Bug", back_populates="comments")
 ```
-
-
-### **🗄 Database Schema Diagram (Mermaid)**
-
-```mermaid
-erDiagram
-    USERS ||--o{ PROJECT_MEMBERS : "belongs to"
-    PROJECTS ||--o{ PROJECT_MEMBERS : "has members"
-    PROJECTS ||--o{ EPICS : "has"
-    EPICS ||--o{ STORIES : "has"
-    STORIES ||--o{ TASKS : "has"
-    STORIES ||--o{ BUGS : "has"
-    TASKS ||--o{ COMMENTS : "has"
-    BUGS ||--o{ COMMENTS : "has"
-    USERS ||--o{ TASKS : "assigned to"
-    USERS ||--o{ BUGS : "assigned to"
-    USERS ||--o{ COMMENTS : "writes"
-
-    USERS {
-        int id
-        string username
-        string email
-        string hashed_password
-        datetime created_at
-    }
-    PROJECTS {
-        int id
-        string name
-        string description
-        datetime created_at
-    }
-    EPICS {
-        int id
-        string title
-        string description
-        int project_id
-    }
-    STORIES {
-        int id
-        string title
-        string description
-        int epic_id
-    }
-    TASKS {
-        int id
-        string title
-        string description
-        string status
-        int story_id
-        int assignee_id
-    }
-    BUGS {
-        int id
-        string title
-        string description
-        string severity
-        string status
-        int story_id
-        int assignee_id
-    }
-    COMMENTS {
-        int id
-        string content
-        int author_id
-        int task_id
-        int bug_id
-    }
-```
-
 
 ---
 
