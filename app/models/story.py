@@ -1,14 +1,14 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Enum, Text, Table
-from sqlalchemy.orm import relationship
 from datetime import datetime
-import enum
+
 from app.database import Base
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import relationship
 
 
 # ---------- STORY ----------
 class Story(Base):
     __tablename__ = "stories"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(Text)

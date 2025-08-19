@@ -1,14 +1,23 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Enum, Text, Table
-from sqlalchemy.orm import relationship
 from datetime import datetime
-import enum
+
 from app.database import Base
+from app.models.enums import TaskStatus  # ✅ FIX: import TaskStatus
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.orm import relationship
 
 
 # ---------- TASK ----------
 class Task(Base):
     __tablename__ = "tasks"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(Text)

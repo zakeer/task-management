@@ -1,12 +1,22 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Enum, Text, Table
-from sqlalchemy.orm import relationship
 from datetime import datetime
-import enum
+
 from app.database import Base
+from app.models.enums import BugSeverity, TaskStatus
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.orm import relationship
+
 
 class Bug(Base):
     __tablename__ = "bugs"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
     description = Column(Text)
@@ -19,4 +29,3 @@ class Bug(Base):
     story = relationship("Story", back_populates="bugs")
     assignee = relationship("User", back_populates="bugs")
     comments = relationship("Comment", back_populates="bug")
-

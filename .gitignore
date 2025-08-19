@@ -1,0 +1,50 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+*.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Virtual Environment
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+*.out
+*.err
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Testing
+.tox/
+.nox/
+.coverage
+*.cover
+coverage.xml
+*.pytest_cache/
+.cache/
+
+# FastAPI specific
+instance/
+*.db
+*.sqlite3
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
