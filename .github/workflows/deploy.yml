@@ -1,0 +1,27 @@
+name: Deploy FastAPI to EC2
+
+on:
+  push:
+    branches: [setup/project]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user   
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/task-management
+            git pull origin setup/project
+            docker build -t fastapi-app .
+            docker stop fastapi-container || true
+            docker rm fastapi-container || true
+            docker run -d -p 8000:8000 --name fastapi-container fastapi-app
+            sudo systemctl restart nginx
