@@ -18,7 +18,7 @@ jobs:
           username: ec2-user   
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/fastapi-book-project
+            cd ~/task-management
             git pull origin setup/project
             docker build -t fastapi-app .
             docker stop fastapi-container || true
