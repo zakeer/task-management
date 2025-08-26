@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app.database import Base
+from app.db.base import Base
 from app.models.association_table import project_members
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.orm import relationship
