@@ -4,13 +4,13 @@ FastAPI run server without docker
 ```bash
 uvicorn app.main:app --reload
 ```
-
+ 
 Verify the app is running or not by checking http://localhost:8000/docs
 
 Run Server using Docker
 ```bash
 # Build the docker
-docker build -t fastapi-app .
+docker build -t fastapi-app . 
 
 # Run the docker container
 docker run -d -p 8000:8000 --name fastapi-container fastapi-app
