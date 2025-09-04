@@ -8,11 +8,11 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    username: str
 
 
 class UserRead(UserBase):
     id: int
-    is_active: bool
 
     class Config:
         from_attributes = True

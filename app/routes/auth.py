@@ -9,21 +9,12 @@ from app.core.security import (
 )
 
 # from app.core import security
-from app.db.session import get_db
+from app.db.sessions import get_db
 from app.models.user import User
 from app.schemas.user import UserCreate, UserRead
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
-
-
-
-
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-    full_name: Optional[str] = None
 
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -39,8 +30,8 @@ def create_users(user_in: UserCreate, db: Session = Depends(get_db)):
     user = User(
         email=user_in.email,
         fullname=user_in.fullname,
-        password=hashed,
-        role="User",
+        username=user_in.username,
+        hashed_password=hashed,  # ✅ use hashed_password instead of password
     )
     db.add(user)
     db.commit()
@@ -53,16 +44,13 @@ def login(
     db: Session = Depends(get_db),
 ):
     user = db.query(User).filter(User.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.password):
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
         )
-
-    if not user.is_active:
-        raise HTTPException(status_code=403, detail="Inactive user")
-
-    token_data = {"sub": str(user.id), "role": user.role}
+    
+    token_data = {"sub": str(user.id)}
     access_token = create_access_token(token_data)
 
     return {"access_token": access_token, "token_type": "bearer"}
