@@ -1,4 +1,4 @@
-from app.routes.auth import router as user_router  # adjust import to your file
+from app.routes.auth import router as user_router
 from fastapi import FastAPI
 
 app = FastAPI(title="Project Management API")

@@ -1,12 +1,12 @@
 # tests/test_user.py
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app
 from app.db.sessions import get_db
 from app.models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.db.base import Base
+from app.main import app
 
 
 
