@@ -277,7 +277,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Enum, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
-from app.database import Base
+from app.db.base import Base
 
 # ---------- ENUMS ----------
 class BugSeverity(str, enum.Enum):
