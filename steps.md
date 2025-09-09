@@ -63,3 +63,20 @@ alembic revision --autogenerate -m "Create users table"
 ```bash
 alembic upgrade head
 ```
+
+
+Introducing a third table, often called an association table, that links users and projects together.
+
+Alembic Migration Script 📜
+After updating your `user.py`, `project.py`, `user_project_association` in models, run the autogenerate command:
+
+```bash
+alembic revision --autogenerate -m "Add Project model and user-project relationship"
+```
+
+Alembic will detect the new `Project` model and the `user_project_association` table and generate a migration file like this. 
+
+Run upgrade
+```bash
+alembic upgrade head
+```

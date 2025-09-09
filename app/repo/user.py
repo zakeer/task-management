@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 from app.models.user import User
-from app.schema.user import UserCreate, TokenData
+from app.schema import UserCreate, TokenData
 from app.db.sessions import get_db
 from app.utils.auth import get_password_hash, oauth2_scheme, SECRET_KEY, ALGORITHM
 
