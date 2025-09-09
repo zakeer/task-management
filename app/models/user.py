@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from app.database import Base
-from app.models.association_table import project_members
+from app.db.base import Base
 from sqlalchemy import Column, DateTime, Integer, String
-from sqlalchemy.orm import relationship
+
+from app.schema.user import UserBase
 
 
 # ---------- USER ----------
@@ -13,12 +13,16 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, nullable=False, index=True)
     email = Column(String, unique=True, nullable=False, index=True)
-    hashed_password = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    password = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
 
-    projects = relationship(
-        "Project", secondary=project_members, back_populates="members"
-    )
-    tasks = relationship("Task", back_populates="assignee")
-    bugs = relationship("Bug", back_populates="assignee")
-    comments = relationship("Comment", back_populates="author")
+    def __repr__(self):
+        return f"<User(username='{self.username}', email='{self.email}')>"
+    
+    def to_dict(self):
+        return UserBase(
+            id=getattr(self, "id", 0),
+            email=str(getattr(self, "email", "")),
+            username=str(getattr(self, "username", ""))
+        )
+
