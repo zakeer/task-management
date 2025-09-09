@@ -7,7 +7,7 @@ from datetime import timedelta
 
 from app.db.sessions import get_db
 
-from app.schema.user import UserBase, UserCreate, Token
+from app.schema import UserBase, UserCreate, Token
 from app.utils.auth import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from app.repo import user as user_repo 
 

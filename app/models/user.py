@@ -2,9 +2,8 @@ from datetime import datetime
 
 from app.db.base import Base
 from sqlalchemy import Column, DateTime, Integer, String
-
-from app.schema.user import UserBase
-
+from sqlalchemy.orm import relationship
+from app.models.user_project_association import user_project_association
 
 # ---------- USER ----------
 class User(Base):
@@ -16,13 +15,13 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
 
+    # Add this relationship to link users to their projects
+    projects = relationship(
+        "Project",
+        secondary=user_project_association,
+        back_populates="users"
+    )
+
     def __repr__(self):
         return f"<User(username='{self.username}', email='{self.email}')>"
     
-    def to_dict(self):
-        return UserBase(
-            id=getattr(self, "id", 0),
-            email=str(getattr(self, "email", "")),
-            username=str(getattr(self, "username", ""))
-        )
-
