@@ -3,7 +3,7 @@
 FastAPI run server without docker
 ```bash
 uvicorn app.main:app --reload
-```
+``
  
 Verify the app is running or not by checking http://localhost:8000/docs
 

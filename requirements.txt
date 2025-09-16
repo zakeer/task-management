@@ -6,3 +6,13 @@ pydantic
 alembic
 python-jose
 passlib[bcrypt]
+pydantic==2.11.7
+pydantic-settings==2.10.1
+pydantic[email]==2.11.7
+isort==6.0.1
+black==25.1.0
+flake8==7.3.0
+pre-commit==4.3.0
+jose
+python-multipart
+httpx

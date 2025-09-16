@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from app.database import Base
-from app.models.enums import TaskStatus  # ✅ FIX: import TaskStatus
+from app.db.base import Base
+from app.models.enums import TaskStatus  # FIX: import TaskStatus
 from sqlalchemy import (
     Column,
     DateTime,
@@ -12,6 +12,16 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import relationship
+
+# app/models/__init__.py
+# from .user import User
+# from .task import Task
+
+
+# def create_task_for_user():
+#     from .user import User  # import locally
+
+#     user = User()
 
 
 # ---------- TASK ----------
