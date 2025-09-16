@@ -22,7 +22,7 @@ class User(Base):
 
     # Relationships
     projects = relationship(
-        "Project", secondary=project_members, back_populates="members"
+        "Project", secondary='project_members', back_populates="members"
     )
 
     tasks = relationship(
