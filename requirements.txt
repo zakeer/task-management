@@ -3,6 +3,9 @@ uvicorn
 sqlalchemy
 psycopg2-binary
 pydantic
+pydantic[email]
 alembic
 python-jose
+pydantic_settings
+python-multipart
 passlib[bcrypt]

@@ -28,3 +28,4 @@ src_paths = ["src", "apps"]  # Adjust paths as per your project structure
 [tool.flake8]
 max-line-length = 79
 extend-ignore = ["E203", "W503"]  # For compatibility with Black (optional)
+
