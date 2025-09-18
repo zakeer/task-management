@@ -14,14 +14,21 @@ class User(Base):
     username = Column(String, unique=True, nullable=False, index=True)
     email = Column(String, unique=True, nullable=False, index=True)
     password = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.created_at is None:
+            self.created_at = datetime.now()
+
 
     def __repr__(self):
         return f"<User(username='{self.username}', email='{self.email}')>"
     
     def to_dict(self):
         return UserBase(
-            id=getattr(self, "id", 0),
+            # id=getattr(self, "id", 0),
+            id=self.id if self.id is not None else 0,
             email=str(getattr(self, "email", "")),
             username=str(getattr(self, "username", ""))
         )
